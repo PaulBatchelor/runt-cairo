@@ -1,0 +1,27 @@
+[
+: cr ptr ;
+: surface ptr ;
+]
+
+120 120 cairo_image_surface_create _surface setptr
+surface cairo_create _cr setptr
+
+1 0 0 cr cairo_set_source_rgb
+
+cr cairo_paint
+
+0 0 0.5 cr cairo_set_source_rgb
+
+0 0 50 50 cr cairo_rectangle
+
+cr cairo_fill_preserve
+0 0.8 0 cr cairo_set_source_rgb
+cr cairo_stroke
+
+50 50 10 0 2 cr cairo_arc
+cr cairo_fill
+
+"test.png" surface cairo_surface_write_to_png
+
+surface cairo_surface_destroy
+cr cairo_destroy
