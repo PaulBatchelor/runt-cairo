@@ -1,5 +1,9 @@
 default: librunt_cairo.a rntcairo
 CFLAGS += -ansi -Wall -pedantic -g
+LIBS += -lrunt -lcairo -ldl 
+CONFIG?=
+
+include $(CONFIG)
 
 OBJ = cairo.o
 
@@ -10,7 +14,7 @@ librunt_cairo.a: $(OBJ)
 	ar rcs $@ $(OBJ)
 
 rntcairo: parse.c librunt_cairo.a
-	$(CC) $< -o $@ -lrunt -lcairo -ldl librunt_cairo.a
+	$(CC) $(CFLAGS) $< -o $@ $(LIBS) librunt_cairo.a
 
 install: rntcairo librunt_cairo.a
 	mkdir -p ~/.runt/bin
