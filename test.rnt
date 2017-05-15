@@ -6,7 +6,7 @@
 120 120 cairo_image_surface_create _surface setptr
 surface cairo_create _cr setptr
 
-1 0 0 cr cairo_set_source_rgb
+0 1 0 cr cairo_set_source_rgb
 
 cr cairo_paint
 
