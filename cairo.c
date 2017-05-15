@@ -279,6 +279,29 @@ static runt_int rproc_arc(runt_vm *vm, runt_ptr p)
     return RUNT_OK;
 }
 
+static runt_int rproc_frame(runt_vm *vm, runt_ptr p)
+{
+    runt_int rc;
+    runt_stacklet *s;
+    runt_int frame;
+    char *str;
+    const char *pstr;
+
+    rc = runt_ppop(vm, &s);
+    RUNT_ERROR_CHECK(rc);
+    frame = s->f;
+
+    rc = runt_ppush(vm, &s);
+    RUNT_ERROR_CHECK(rc);
+
+    runt_malloc(vm, sizeof(char) * 10, (void **)&str);
+    sprintf(str, "%04d.png", frame);
+    pstr = str;
+    s->p = runt_mk_string(vm, pstr, 10);
+
+    return RUNT_OK;
+}
+
 runt_int runt_load_cairo(runt_vm *vm)
 {
     runt_word_define(vm, 
@@ -349,6 +372,11 @@ runt_int runt_load_cairo(runt_vm *vm)
         "cairo_arc", 
         9, 
         rproc_arc);
+    
+    runt_word_define(vm, 
+        "cairo_frame", 
+        11, 
+        rproc_frame);
 
     return RUNT_OK;
 }

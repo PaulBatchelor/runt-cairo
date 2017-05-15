@@ -21,7 +21,8 @@ cr cairo_stroke
 50 50 10 0 2 cr cairo_arc
 cr cairo_fill
 
-"test.png" surface cairo_surface_write_to_png
+# "output.png" surface cairo_surface_write_to_png
+1 cairo_frame surface cairo_surface_write_to_png
 
 surface cairo_surface_destroy
 cr cairo_destroy
