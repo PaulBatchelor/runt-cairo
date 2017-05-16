@@ -40,6 +40,7 @@ static runt_int rproc_surface_destroy(runt_vm *vm, runt_ptr p)
     RUNT_ERROR_CHECK(rc);
     surface = runt_to_cptr(s->p);
     cairo_surface_destroy(surface);
+    free(surface);
     return RUNT_OK;
 }
 
@@ -58,7 +59,6 @@ static runt_int rproc_create(runt_vm *vm, runt_ptr p)
     RUNT_ERROR_CHECK(rc);
     cr = cairo_create(surface);
     s->p = runt_mk_cptr(vm, cr);
-
     return RUNT_OK;
 }
 
@@ -72,6 +72,7 @@ static runt_int rproc_destroy(runt_vm *vm, runt_ptr p)
     RUNT_ERROR_CHECK(rc);
     cr = runt_to_cptr(s->p);
     cairo_destroy(cr);
+    cairo_debug_reset_static_data();
     free(cr);
     return RUNT_OK;
 }

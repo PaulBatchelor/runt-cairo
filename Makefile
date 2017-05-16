@@ -1,5 +1,5 @@
 default: librunt_cairo.a rntcairo
-CFLAGS += -ansi -Wall -pedantic -g
+CFLAGS += -ansi -Wall -pedantic -g -fPIC
 LIBS += -lrunt -lcairo -ldl 
 CONFIG?=
 
