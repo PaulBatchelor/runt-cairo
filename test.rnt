@@ -1,6 +1,7 @@
 [
 : cr ptr ;
 : surface ptr ;
+: frame 0 ;
 ]
 
 120 120 cairo_image_surface_create _surface setptr
@@ -21,7 +22,11 @@ cr cairo_stroke
 50 50 10 0 2 cr cairo_arc
 cr cairo_fill
 
-1 cairo_frame surface cairo_surface_write_to_png
+# write two frames 
+
+frame cairo_frame surface cairo_surface_write_to_png
+frame inc _frame set
+frame cairo_frame surface cairo_surface_write_to_png
 
 surface cairo_surface_destroy
 cr cairo_destroy
