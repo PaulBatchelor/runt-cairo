@@ -149,6 +149,38 @@ static runt_int rproc_set_source_rgb (runt_vm *vm, runt_ptr p)
     return RUNT_OK;
 }
 
+static runt_int rproc_set_source_rgba(runt_vm *vm, runt_ptr p)
+{
+    runt_int rc;
+    runt_stacklet *s;
+    runt_float r, g, b, a;
+    cairo_t *cr;
+
+    rc = runt_ppop(vm, &s);
+    RUNT_ERROR_CHECK(rc);
+    cr = runt_to_cptr(s->p);
+    
+    rc = runt_ppop(vm, &s);
+    RUNT_ERROR_CHECK(rc);
+    a = s->f;
+    
+    rc = runt_ppop(vm, &s);
+    RUNT_ERROR_CHECK(rc);
+    b = s->f;
+    
+    rc = runt_ppop(vm, &s);
+    RUNT_ERROR_CHECK(rc);
+    g = s->f;
+    
+    rc = runt_ppop(vm, &s);
+    RUNT_ERROR_CHECK(rc);
+    r = s->f;
+
+    cairo_set_source_rgba(cr, r, g, b, a);
+
+    return RUNT_OK;
+}
+
 static runt_int rproc_fill(runt_vm *vm, runt_ptr p)
 {
     runt_int rc;
@@ -357,6 +389,11 @@ runt_int runt_load_cairo(runt_vm *vm)
         "cairo_set_source_rgb", 
         20, 
         rproc_set_source_rgb);
+
+    runt_word_define(vm, 
+        "cairo_set_source_rgba", 
+        21, 
+        rproc_set_source_rgba);
     
     runt_word_define(vm, 
         "cairo_fill", 
