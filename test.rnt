@@ -28,5 +28,7 @@ frame cairo_frame surface cairo_surface_write_to_png
 frame inc _frame set
 frame cairo_frame surface cairo_surface_write_to_png
 
-surface cairo_surface_destroy
-cr cairo_destroy
+#surface cairo_surface_destroy
+#cr cairo_destroy
+
+surface cr cairo_free

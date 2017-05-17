@@ -40,7 +40,6 @@ static runt_int rproc_surface_destroy(runt_vm *vm, runt_ptr p)
     RUNT_ERROR_CHECK(rc);
     surface = runt_to_cptr(s->p);
     cairo_surface_destroy(surface);
-    free(surface);
     return RUNT_OK;
 }
 
@@ -71,9 +70,34 @@ static runt_int rproc_destroy(runt_vm *vm, runt_ptr p)
     rc = runt_ppop(vm, &s);
     RUNT_ERROR_CHECK(rc);
     cr = runt_to_cptr(s->p);
-    cairo_destroy(cr);
     cairo_debug_reset_static_data();
+    cairo_destroy(cr);
     free(cr);
+    return RUNT_OK;
+}
+
+static runt_int rproc_free(runt_vm *vm, runt_ptr p)
+{
+    runt_int rc;
+    runt_stacklet *s;
+    cairo_t *cr = NULL;
+    cairo_surface_t *surface;
+
+    rc = runt_ppop(vm, &s);
+    RUNT_ERROR_CHECK(rc);
+    cr = runt_to_cptr(s->p);
+    
+    rc = runt_ppop(vm, &s);
+    RUNT_ERROR_CHECK(rc);
+    surface = runt_to_cptr(s->p);
+
+
+    cairo_surface_destroy(surface);
+    cairo_debug_reset_static_data();
+    cairo_destroy(cr);
+    free(cr);
+    cr = NULL;
+    surface = NULL;
     return RUNT_OK;
 }
 
@@ -378,6 +402,11 @@ runt_int runt_load_cairo(runt_vm *vm)
         "cairo_frame", 
         11, 
         rproc_frame);
+    
+    runt_word_define(vm, 
+        "cairo_free", 
+        10, 
+        rproc_free);
 
     return RUNT_OK;
 }
