@@ -359,6 +359,32 @@ static runt_int rproc_frame(runt_vm *vm, runt_ptr p)
     return RUNT_OK;
 }
 
+static runt_int rproc_pixel(runt_vm *vm, runt_ptr p)
+{
+    runt_int rc;
+    runt_stacklet *s;
+    cairo_surface_t *surface;
+    unsigned char *data;
+
+    rc = runt_ppop(vm, &s);
+    RUNT_ERROR_CHECK(rc);
+    surface = runt_to_cptr(s->p);
+
+    cairo_surface_flush(surface);
+
+    data = cairo_image_surface_get_data(surface);
+    runt_print(vm, "color: %d %d %d %d\n",
+            data[0], data[1], data[2], data[3]);
+
+    data[2] = 0;
+    data[1] = 0;
+    data[0] = 255;
+    cairo_surface_mark_dirty(surface);
+
+    
+    return RUNT_OK;
+}
+
 runt_int runt_load_cairo(runt_vm *vm)
 {
     runt_word_define(vm, 
@@ -444,6 +470,11 @@ runt_int runt_load_cairo(runt_vm *vm)
         "cairo_free", 
         10, 
         rproc_free);
+    
+    runt_word_define(vm, 
+        "cairo_pixel", 
+        11, 
+        rproc_pixel);
 
     return RUNT_OK;
 }
