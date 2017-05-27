@@ -1,6 +1,6 @@
 default: librunt_cairo.a rntcairo
-CFLAGS += -ansi -Wall -pedantic -g -fPIC
-LIBS += -lrunt -lcairo -ldl 
+CFLAGS += -ansi -Wall -pedantic -g -fPIC -I$(HOME)/.runt/include
+LIBS += -lrunt -lcairo -ldl -L$(HOME)/.runt/lib
 CONFIG?=
 
 include $(CONFIG)
