@@ -23,9 +23,12 @@ cr cairo_stroke
 cr cairo_fill
 
 1.0 0.0 0 cr cairo_set_source_rgb
-# cr cairo_paint
-surface cairo_pixel
-surface cairo_pixel
+
+0 0 cr cairo_move_to
+
+100 100 cr cairo_line_to
+
+cr cairo_stroke
 
 # write two frames 
 
@@ -33,7 +36,5 @@ frame cairo_frame surface cairo_surface_write_to_png
 frame inc _frame set
 frame cairo_frame surface cairo_surface_write_to_png
 
-#surface cairo_surface_destroy
-#cr cairo_destroy
 
 surface cr cairo_free

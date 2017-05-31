@@ -385,6 +385,55 @@ static runt_int rproc_pixel(runt_vm *vm, runt_ptr p)
     return RUNT_OK;
 }
 
+static runt_int rproc_move_to(runt_vm *vm, runt_ptr p)
+{
+    runt_int rc;
+    runt_stacklet *s;
+    cairo_t *cr;
+    runt_float x;
+    runt_float y;
+
+    rc = runt_ppop(vm, &s);
+    RUNT_ERROR_CHECK(rc);
+    cr = runt_to_cptr(s->p);
+    
+    rc = runt_ppop(vm, &s);
+    RUNT_ERROR_CHECK(rc);
+    y = s->f;
+    
+    rc = runt_ppop(vm, &s);
+    RUNT_ERROR_CHECK(rc);
+    x = s->f;
+
+    cairo_move_to(cr, x, y);
+
+    return RUNT_OK;
+}
+
+static runt_int rproc_line_to(runt_vm *vm, runt_ptr p)
+{
+    runt_int rc;
+    runt_stacklet *s;
+    cairo_t *cr;
+    runt_float x;
+    runt_float y;
+
+    rc = runt_ppop(vm, &s);
+    RUNT_ERROR_CHECK(rc);
+    cr = runt_to_cptr(s->p);
+    
+    rc = runt_ppop(vm, &s);
+    RUNT_ERROR_CHECK(rc);
+    y = s->f;
+    
+    rc = runt_ppop(vm, &s);
+    RUNT_ERROR_CHECK(rc);
+    x = s->f;
+
+    cairo_line_to(cr, x, y);
+    return RUNT_OK;
+}
+
 runt_int runt_load_cairo(runt_vm *vm)
 {
     runt_word_define(vm, 
@@ -475,6 +524,16 @@ runt_int runt_load_cairo(runt_vm *vm)
         "cairo_pixel", 
         11, 
         rproc_pixel);
+    
+    runt_word_define(vm, 
+        "cairo_move_to", 
+        13, 
+        rproc_move_to);
+    
+    runt_word_define(vm, 
+        "cairo_line_to", 
+        13, 
+        rproc_line_to);
 
     return RUNT_OK;
 }
