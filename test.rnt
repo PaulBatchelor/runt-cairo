@@ -11,6 +11,8 @@ surface cairo_create _cr setptr
 
 cr cairo_paint
 
+2 2 cr cairo_scale
+
 0 0 0.5 cr cairo_set_source_rgb
 
 0 0 50 50 cr cairo_rectangle
