@@ -4,7 +4,7 @@
 : frame 0 ;
 ]
 
-120 120 cairo_image_surface_create _surface setptr
+300 300 cairo_image_surface_create _surface setptr
 surface cairo_create _cr setptr
 
 0 1 0 cr cairo_set_source_rgb
@@ -31,6 +31,14 @@ cr cairo_fill
 100 100 cr cairo_line_to
 
 cr cairo_stroke
+
+25.6 25.6
+102.4 102.4
+1.0 
+102.4 10 / 
+cr cairo_roundrect
+0 0.5 0.2 cr cairo_set_source_rgb
+cr cairo_fill
 
 # write two frames 
 

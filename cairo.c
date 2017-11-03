@@ -459,6 +459,71 @@ static runt_int rproc_scale(runt_vm *vm, runt_ptr p)
     return RUNT_OK;
 }
 
+/* rounded rectangle
+ * code adapted from:
+ *   https://www.cairographics.org/samples/rounded_rectangle/
+ */
+
+static runt_int rproc_roundrect(runt_vm *vm, runt_ptr p)
+{
+    runt_int rc;
+    runt_stacklet *s;
+    cairo_t *cr;
+    runt_float x;
+    runt_float y;
+    runt_float width;
+    runt_float height;
+    runt_float aspect;
+    runt_float corner_radius;
+
+    runt_float radius;
+    runt_float degrees;
+
+    rc = runt_ppop(vm, &s);
+    RUNT_ERROR_CHECK(rc);
+    cr = runt_to_cptr(s->p);
+
+    rc = runt_ppop(vm, &s);
+    RUNT_ERROR_CHECK(rc);
+    corner_radius = s->f;
+    
+    rc = runt_ppop(vm, &s);
+    RUNT_ERROR_CHECK(rc);
+    aspect = s->f;
+    
+    rc = runt_ppop(vm, &s);
+    RUNT_ERROR_CHECK(rc);
+    height = s->f;
+    
+    rc = runt_ppop(vm, &s);
+    RUNT_ERROR_CHECK(rc);
+    width = s->f;
+    
+    rc = runt_ppop(vm, &s);
+    RUNT_ERROR_CHECK(rc);
+    y = s->f;
+    
+    rc = runt_ppop(vm, &s);
+    RUNT_ERROR_CHECK(rc);
+    x = s->f;
+
+    radius = corner_radius / aspect;
+    degrees = M_PI / 180.0;
+
+    cairo_new_sub_path (cr);
+    cairo_arc (cr, x + width - radius, y + radius, 
+        radius, -90 * degrees, 0 * degrees);
+    cairo_arc (cr, x + width - radius, y + height - radius, 
+        radius, 0 * degrees, 90 * degrees);
+    cairo_arc (cr, x + radius, y + height - radius, 
+        radius, 90 * degrees, 180 * degrees);
+    cairo_arc (cr, x + radius, y + radius, 
+        radius, 180 * degrees, 270 * degrees);
+    cairo_close_path (cr);
+
+    return RUNT_OK;
+}
+
 runt_int runt_load_cairo(runt_vm *vm)
 {
     runt_word_define(vm, 
@@ -564,6 +629,11 @@ runt_int runt_load_cairo(runt_vm *vm)
         "cairo_scale", 
         11, 
         rproc_scale);
+    
+    runt_word_define(vm, 
+        "cairo_roundrect", 
+        15, 
+        rproc_roundrect);
 
     return RUNT_OK;
 }
